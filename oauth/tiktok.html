@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-9x9zFAECzcsJGtsg51hC66+EoKSt9WmQE3P1SuvWpsM='; style-src 'unsafe-inline'">
+<title>Content Engine · TikTok sign-in</title>
+<style>body{font:16px/1.5 system-ui,sans-serif;max-width:32rem;margin:15vh auto;padding:0 1rem;color:#1b1f23}a{color:#0f766e}</style>
+</head>
+<body>
+<h1>Returning to Content Engine…</h1>
+<p>This page only passes TikTok's answer back to the Content Engine app running on this computer. It stores nothing.</p>
+<p id="manual" hidden>If nothing happens, <a id="link" href="#">continue to the app</a>.</p>
+<script>
+(function () {
+  // Forward only the OAuth answer fields to the fixed local callback. Nothing else is read or sent anywhere.
+  var allowed = ["code", "state", "scopes", "error", "error_description"];
+  var source = new URLSearchParams(window.location.search);
+  var target = new URL("http://localhost:3000/api/oauth/tiktok/callback");
+  allowed.forEach(function (key) { var v = source.get(key); if (v !== null) target.searchParams.set(key, v); });
+  var link = document.getElementById("link");
+  link.href = target.toString();
+  document.getElementById("manual").hidden = false;
+  window.location.replace(target.toString());
+})();
+</script>
+</body>
+</html>
